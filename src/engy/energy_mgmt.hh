@@ -5,8 +5,8 @@
 #ifndef GEM5_ENGY_HH
 #define GEM5_ENGY_HH
 
-#include "params/EnergyMgmt.hh"
 #include "sim/sim_object.hh"
+#include "params/EnergyMgmt.hh"
 
 class EnergyMgmt : public SimObject
 {
@@ -19,6 +19,9 @@ public:
     EnergyMgmt(const Params *p);
     virtual ~EnergyMgmt();
     virtual void init();
+
+protected:
+    std::string _path_energy_profile;
 };
 
 #endif //GEM5_ENGY_HH

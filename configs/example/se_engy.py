@@ -194,7 +194,7 @@ system.cpu_clk_domain = SrcClockDomain(clock = options.cpu_clock,
                                        system.cpu_voltage_domain)
 
 # Create an energy management module
-system.energy_mgmt = EnergyMgmt()
+system.energy_mgmt = EnergyMgmt(path_energy_profile = "./energy_prof")
 
 # All cpus belong to a common cpu_clk_domain, therefore running at a common
 # frequency.
