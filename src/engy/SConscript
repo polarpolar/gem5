@@ -1,6 +1,7 @@
 Import('*')
 
 Source('energy_mgmt.cc')
+Source('energy_port.cc')
 
 SimObject('EnergyMgmt.py')
 
