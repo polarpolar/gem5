@@ -14,6 +14,16 @@ int EnergyObject::consumeEnergy(double _energy)
     return _seport.consumeEnergy(_energy);
 }
 
+MasterEnergyPort& EnergyObject::getMasterEnergyPort()
+{
+    return _meport;
+}
+
+SlaveEnergyPort& EnergyObject::getSlaveEnergyPort()
+{
+    return _seport;
+}
+
 int EnergyObject::powerOff()
 {
     return 0;

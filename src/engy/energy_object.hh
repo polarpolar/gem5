@@ -22,6 +22,9 @@ public:
     // set SimObject of _seport and _meport
     void setSimObject(SimObject *_sim);
 
+    SlaveEnergyPort& getSlaveEnergyPort();
+    MasterEnergyPort& getMasterEnergyPort();
+
     // A method telling energy mgmt module this object has consume energy.
     int consumeEnergy(double _energy);
 
