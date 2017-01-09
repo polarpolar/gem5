@@ -7,14 +7,20 @@
 
 #include "engy/energy_port.hh"
 
-class EnergyObject
-{
+class SimObject;
+
+class EnergyObject {
 protected:
     // An energy object can be both consumer or provider,
     // so we have both slave port and master port.
     SlaveEnergyPort _seport;
     MasterEnergyPort _meport;
 public:
+    EnergyObject()
+    { }
+
+    // set SimObject of _seport and _meport
+    void setSimObject(SimObject *_sim);
 
     // A method telling energy mgmt module this object has consume energy.
     int consumeEnergy(double _energy);

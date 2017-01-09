@@ -5,7 +5,10 @@
 #ifndef GEM5_ENERGY_PORT_HH
 #define GEM5_ENERGY_PORT_HH
 
-#include "sim/sim_object.hh"
+#include <string>
+#include <vector>
+
+class SimObject;
 
 class EnergyPort
 {
@@ -14,12 +17,12 @@ protected:
     int port_id;
     std::string port_name;
 
-    // owner needs to be set when SimObject is initialized.
+    // owner needs to be set when SimObject is created.
     SimObject *owner;
 
 public:
 
-    EnergyPort(SimObject *_owner)
+    EnergyPort(SimObject *_owner = NULL)
             : port_id(-1), port_name(""), owner(_owner)
     { }
 
@@ -58,7 +61,7 @@ protected:
     std::vector<SlaveEnergyPort*> slave_list;
 
 public:
-    MasterEnergyPort(SimObject *_owner)
+    MasterEnergyPort(SimObject *_owner = NULL)
             : EnergyPort(_owner)
     {
         slave_list.resize(0);
@@ -76,7 +79,7 @@ protected:
     MasterEnergyPort* master;
 
 public:
-    SlaveEnergyPort(SimObject *_owner)
+    SlaveEnergyPort(SimObject *_owner = NULL)
             : EnergyPort(_owner), master(NULL)
     { }
 
