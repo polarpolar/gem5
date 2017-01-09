@@ -4,15 +4,25 @@
 
 #include "engy/energy_port.hh"
 
-int MasterEnergyPort::bind_slave(SlaveEnergyPort &_slave)
+int MasterEnergyPort::bindSlave(SlaveEnergyPort &_slave)
 {
     slave_list.push_back(&_slave);
-    _slave.set_master(*this);
+    _slave.setMaster(*this);
     return 0;
 }
 
-int SlaveEnergyPort::set_master(MasterEnergyPort &_master)
+int MasterEnergyPort::consumeEnergy(double _energy)
+{
+    return 0;
+}
+
+int SlaveEnergyPort::setMaster(MasterEnergyPort &_master)
 {
     master = &_master;
     return 0;
+}
+
+int SlaveEnergyPort::consumeEnergy(double _energy)
+{
+    return master->consumeEnergy(_energy);
 }

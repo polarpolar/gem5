@@ -13,30 +13,37 @@ protected:
 
     int port_id;
     std::string port_name;
-    SimObject &owner;
+
+    // owner needs to be set when SimObject is initialized.
+    SimObject *owner;
 
 public:
 
-    EnergyPort(SimObject &_owner)
+    EnergyPort(SimObject *_owner)
             : port_id(-1), port_name(""), owner(_owner)
     { }
 
-    void set_port_id(int _port_id)
+    void setOwner(SimObject *_owner)
+    {
+        owner = _owner;
+    }
+
+    void setPortId(int _port_id)
     {
         port_id = _port_id;
     }
 
-    void set_port_name(std::string _port_name)
+    void setPortName(std::string _port_name)
     {
         port_name = _port_name;
     }
 
-    int get_port_id()
+    int getPortId()
     {
         return port_id;
     }
 
-    std::string get_port_name()
+    std::string getPortName()
     {
         return port_name;
     }
@@ -51,13 +58,14 @@ protected:
     std::vector<SlaveEnergyPort*> slave_list;
 
 public:
-    MasterEnergyPort(SimObject &_owner)
+    MasterEnergyPort(SimObject *_owner)
             : EnergyPort(_owner)
     {
         slave_list.resize(0);
     }
 
-    int bind_slave(SlaveEnergyPort& _slave);
+    int bindSlave(SlaveEnergyPort& _slave);
+    int consumeEnergy(double _energy);
 
 };
 
@@ -68,11 +76,12 @@ protected:
     MasterEnergyPort* master;
 
 public:
-    SlaveEnergyPort(SimObject &_owner)
+    SlaveEnergyPort(SimObject *_owner)
             : EnergyPort(_owner), master(NULL)
     { }
 
-    int set_master(MasterEnergyPort& _master);
+    int setMaster(MasterEnergyPort& _master);
+    int consumeEnergy(double _energy);
 
 };
 
