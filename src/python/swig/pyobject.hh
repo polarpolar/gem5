@@ -46,6 +46,11 @@ class PythonSimObjectResolver : public SimObjectResolver
 EtherInt * lookupEthPort(SimObject *so, const std::string &name, int i);
 
 /**
+ * Connect energy ports. Called from Python via SWIG.
+ */
+int connectEnergyPorts(SimObject *o1, SimObject *o2);
+
+/**
  * Connect the described MemObject ports.  Called from Python via SWIG.
  */
 int connectPorts(SimObject *o1, const std::string &name1, int i1,

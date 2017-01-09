@@ -38,6 +38,8 @@
 %include <std_string.i>
 %include <stdint.i>
 
+int connectEnergyPorts(SimObject *o1, SimObject *o2);
+
 int connectPorts(SimObject *o1, const std::string &name1, int i1,
                  SimObject *o2, const std::string &name2, int i2);
 
