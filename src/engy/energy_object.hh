@@ -26,7 +26,7 @@ public:
     MasterEnergyPort& getMasterEnergyPort();
 
     // A method telling energy mgmt module this object has consume energy.
-    int consumeEnergy(double _energy);
+    virtual int consumeEnergy(double _energy);
 
     // Methods to implement actions taken when power on/off by child classes.
     virtual int powerOn();

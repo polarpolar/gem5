@@ -3,26 +3,60 @@
 //
 
 #include "engy/energy_port.hh"
+#include "sim/sim_object.hh"
+
+int EnergyPort::handleMsg(EnergyMsg msg)
+{
+    int rlt = 1;
+
+    switch(msg.type)
+    {
+        case CONSUME_ENERGY:
+            if (port_type != MASTERPORT)
+                return 0;
+            rlt = owner->consumeEnergy(msg.val);
+            break;
+        case POWEROFF:
+            if (port_type != SLAVEPORT)
+                return 0;
+            rlt = owner->powerOff();
+            break;
+        case POWERON:
+            if (port_type != SLAVEPORT)
+                return 0;
+            rlt = owner->powerOn();
+            break;
+    }
+
+    return rlt;
+}
 
 int MasterEnergyPort::bindSlave(SlaveEnergyPort &_slave)
 {
     slave_list.push_back(&_slave);
     _slave.setMaster(*this);
-    return 0;
+    return 1;
 }
 
-int MasterEnergyPort::consumeEnergy(double _energy)
+int MasterEnergyPort::broadcastMsg(EnergyMsg msg)
 {
-    return 0;
+    int rlt = 1;
+    unsigned long len = slave_list.size();
+    for (int i = 0; i < len; i++) {
+        if (!slave_list[i]->handleMsg(msg)) {
+            rlt = 0;
+        }
+    }
+    return rlt;
 }
 
 int SlaveEnergyPort::setMaster(MasterEnergyPort &_master)
 {
     master = &_master;
-    return 0;
+    return 1;
 }
 
-int SlaveEnergyPort::consumeEnergy(double _energy)
+int SlaveEnergyPort::signalMsg(EnergyMsg msg)
 {
-    return master->consumeEnergy(_energy);
+    return master->handleMsg(msg);
 }

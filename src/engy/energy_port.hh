@@ -8,6 +8,26 @@
 #include <string>
 #include <vector>
 
+enum EnergyMsgType
+{
+    CONSUME_ENERGY = 1,
+    POWEROFF = 2,
+    POWERON = 3
+};
+
+struct EnergyMsg
+{
+    EnergyMsgType type;
+    double val;
+};
+
+enum EnergyPortType
+{
+    NOT_DECIDED = 0,
+    MASTERPORT = 1,
+    SLAVEPORT = 2
+};
+
 class SimObject;
 
 class EnergyPort
@@ -16,6 +36,7 @@ protected:
 
     int port_id;
     std::string port_name;
+    EnergyPortType port_type;
 
     // owner needs to be set when SimObject is created.
     SimObject *owner;
@@ -23,7 +44,7 @@ protected:
 public:
 
     EnergyPort(SimObject *_owner = NULL)
-            : port_id(-1), port_name(""), owner(_owner)
+            : port_id(-1), port_name(""), port_type(NOT_DECIDED), owner(_owner)
     { }
 
     void setOwner(SimObject *_owner)
@@ -50,6 +71,8 @@ public:
     {
         return port_name;
     }
+
+    int handleMsg(EnergyMsg msg);
 };
 
 class SlaveEnergyPort;
@@ -65,11 +88,11 @@ public:
             : EnergyPort(_owner)
     {
         slave_list.resize(0);
+        port_type = MASTERPORT;
     }
 
     int bindSlave(SlaveEnergyPort& _slave);
-    int consumeEnergy(double _energy);
-
+    int broadcastMsg(EnergyMsg msg);
 };
 
 class SlaveEnergyPort : public EnergyPort
@@ -81,10 +104,12 @@ protected:
 public:
     SlaveEnergyPort(SimObject *_owner = NULL)
             : EnergyPort(_owner), master(NULL)
-    { }
+    {
+        port_type = SLAVEPORT;
+    }
 
     int setMaster(MasterEnergyPort& _master);
-    int consumeEnergy(double _energy);
+    int signalMsg(EnergyMsg msg);
 
 };
 

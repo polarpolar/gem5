@@ -11,7 +11,7 @@ void EnergyObject::setSimObject(SimObject *_sim)
 }
 int EnergyObject::consumeEnergy(double _energy)
 {
-    return _seport.consumeEnergy(_energy);
+    return 1;
 }
 
 MasterEnergyPort& EnergyObject::getMasterEnergyPort()
@@ -26,10 +26,10 @@ SlaveEnergyPort& EnergyObject::getSlaveEnergyPort()
 
 int EnergyObject::powerOff()
 {
-    return 0;
+    return 1;
 }
 
 int EnergyObject::powerOn()
 {
-    return 0;
+    return 1;
 }

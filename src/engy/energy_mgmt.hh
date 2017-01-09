@@ -19,9 +19,14 @@ public:
     EnergyMgmt(const Params *p);
     virtual ~EnergyMgmt();
     virtual void init();
+    virtual int consumeEnergy(double val);
+    void broadcastPowerOff();
+    void broadcastPowerOn();
 
 protected:
     std::string _path_energy_profile;
+    EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOff> event_poweroff;
+    EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOn> event_poweron;
 };
 
 #endif //GEM5_ENGY_HH
