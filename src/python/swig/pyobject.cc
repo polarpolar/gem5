@@ -74,6 +74,9 @@ lookupEthPort(SimObject *so, const std::string &name, int i)
 int
 connectEnergyPorts(SimObject *o1, SimObject *o2)
 {
+    /* Todo: this function should be used in simulation script to connect modules we care about. */
+    /* Todo: connection of modules should be controlled by configuration files. */
+
     MasterEnergyPort& meport = o1->getMasterEnergyPort();
     SlaveEnergyPort& seport = o2->getSlaveEnergyPort();
     meport.bindSlave(seport);
