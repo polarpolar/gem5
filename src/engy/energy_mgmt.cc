@@ -3,6 +3,7 @@
 //
 
 #include "engy/energy_mgmt.hh"
+#include "debug/EnergyMgmt.hh"
 
 EnergyMgmt::EnergyMgmt(const Params *p)
         : SimObject(p),
@@ -21,12 +22,15 @@ EnergyMgmt::~EnergyMgmt()
 void EnergyMgmt::init()
 {
     /* Todo: Read energy profile here */
-    printf("Energy Management module initialized!\n");
-    printf("Energy profile: %s\n", _path_energy_profile.c_str());
+    DPRINTF(EnergyMgmt, "Energy Management module initialized!\n");
+    //printf("Energy Management module initialized!\n");
+    //printf("Energy profile: %s\n", _path_energy_profile.c_str());
 }
 
 int EnergyMgmt::consumeEnergy(double val)
 {
+    /* Todo: Pass the module which consumed the energy to this function */
+    DPRINTF(EnergyMgmt, "Energy %lf is consumed by xxx.\n", val);
     return 1;
 }
 
@@ -35,6 +39,7 @@ void EnergyMgmt::broadcastPowerOff()
     EnergyMsg msg;
     msg.type = POWEROFF;
     _meport.broadcastMsg(msg);
+    DPRINTF(EnergyMgmt, "Insufficient energy, system power off.\n");
 }
 
 void EnergyMgmt::broadcastPowerOn()
@@ -42,6 +47,7 @@ void EnergyMgmt::broadcastPowerOn()
     EnergyMsg msg;
     msg.type = POWERON;
     _meport.broadcastMsg(msg);
+    DPRINTF(EnergyMgmt, "Sufficient energy, system power on.\n");
 }
 
 EnergyMgmt *

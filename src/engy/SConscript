@@ -6,3 +6,4 @@ Source('energy_object.cc')
 
 SimObject('EnergyMgmt.py')
 
+DebugFlag('EnergyMgmt')
