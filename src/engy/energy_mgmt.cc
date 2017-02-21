@@ -1,7 +1,7 @@
 //
 // Created by lf-z on 12/28/16.
 //
-
+#include <fstream>
 #include "engy/energy_mgmt.hh"
 #include "debug/EnergyMgmt.hh"
 
@@ -22,12 +22,16 @@ EnergyMgmt::~EnergyMgmt()
 
 void EnergyMgmt::init()
 {
-    /* Todo: Read energy profile here */
+    /* Read energy profile */
+    std::vector<double> energy_data;
+    energy_data = read_energy_profile();
+
+    /* Todo: Push energy harvesting events here */
+    push_energy_harvesting_events(energy_data);
+
     DPRINTF(EnergyMgmt, "Energy Management module initialized!\n");
     DPRINTF(EnergyMgmt, "Energy profile: %s (Time unit: %d ticks)\n",
             _path_energy_profile.c_str(), _time_unit);
-    //printf("Energy Management module initialized!\n");
-    //printf("Energy profile: %s\n", _path_energy_profile.c_str());
 }
 
 int EnergyMgmt::consumeEnergy(double val)
@@ -51,6 +55,26 @@ void EnergyMgmt::broadcastPowerOn()
     msg.type = POWERON;
     _meport.broadcastMsg(msg);
     DPRINTF(EnergyMgmt, "Sufficient energy, system power on.\n");
+}
+
+std::vector<double> EnergyMgmt::read_energy_profile()
+{
+    std::vector<double> data;
+    double temp;
+    std::ifstream fin;
+    fin.open(_path_energy_profile.c_str());
+    /* Todo: read energy profile and store the data into vector. */
+    data.resize(0);
+    while (fin>>temp) {
+        data.push_back(temp);
+    }
+    fin.close();
+    return data;
+}
+
+void EnergyMgmt::push_energy_harvesting_events(std::vector<double> _energy_harv)
+{
+    /* Todo: push energy harvesting events into event queue */
 }
 
 EnergyMgmt *
