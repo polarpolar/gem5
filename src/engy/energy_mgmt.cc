@@ -23,6 +23,7 @@ void EnergyMgmt::init()
 {
     /* Todo: Read energy profile here */
     DPRINTF(EnergyMgmt, "Energy Management module initialized!\n");
+    DPRINTF(EnergyMgmt, "Energy profile: %s\n", _path_energy_profile.c_str());
     //printf("Energy Management module initialized!\n");
     //printf("Energy profile: %s\n", _path_energy_profile.c_str());
 }

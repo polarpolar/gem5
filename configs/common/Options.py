@@ -243,6 +243,11 @@ def addSEOptions(parser):
     parser.add_option("--errout", default="",
                       help="Redirect stderr to a file.")
 
+def addEngyOptions(parser):
+    # Energy Management Options
+    parser.add_option("--energy-profile", default="./energy_prof",
+                      help="The options to pass energy profile.")
+
 def addFSOptions(parser):
     # Simulation options
     parser.add_option("--timesync", action="store_true",
