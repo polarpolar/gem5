@@ -29,8 +29,8 @@ void EnergyMgmt::init()
 
 int EnergyMgmt::consumeEnergy(double val)
 {
-    /* Todo: Pass the module which consumed the energy to this function */
-    DPRINTF(EnergyMgmt, "Energy %lf is consumed by xxx.\n", val);
+    /* Todo: Pass the module which consumed the energy to this function. (Or DPRINTF in the module which consumes energy) */
+    DPRINTF(EnergyMgmt, "Energy %lf is consumed by xxx. Energy remained: xxx\n", val);
     return 1;
 }
 
