@@ -26,6 +26,7 @@ public:
 protected:
     /* Todo: there should be a variable for energy remained. */
     std::string _path_energy_profile;
+    int _time_unit;
     EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOff> event_poweroff;
     EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOn> event_poweron;
 };

@@ -8,6 +8,7 @@
 EnergyMgmt::EnergyMgmt(const Params *p)
         : SimObject(p),
           _path_energy_profile(p->path_energy_profile),
+          _time_unit(p->energy_time_unit),
           event_poweroff(this),
           event_poweron(this)
 {
@@ -23,7 +24,8 @@ void EnergyMgmt::init()
 {
     /* Todo: Read energy profile here */
     DPRINTF(EnergyMgmt, "Energy Management module initialized!\n");
-    DPRINTF(EnergyMgmt, "Energy profile: %s\n", _path_energy_profile.c_str());
+    DPRINTF(EnergyMgmt, "Energy profile: %s (Time unit: %d ticks)\n",
+            _path_energy_profile.c_str(), _time_unit);
     //printf("Energy Management module initialized!\n");
     //printf("Energy profile: %s\n", _path_energy_profile.c_str());
 }
