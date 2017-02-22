@@ -19,21 +19,25 @@ public:
     EnergyMgmt(const Params *p);
     virtual ~EnergyMgmt();
     virtual void init();
+    /* Harvest energy if val < 0 */
     virtual int consumeEnergy(double val);
     void broadcastPowerOff();
     void broadcastPowerOn();
 
 protected:
-    /* Todo: there should be a variable for energy remained. */
     /* Todo: there should be event wrapper for energy harvest. */
-    std::string _path_energy_profile;
-    int _time_unit;
+    int time_unit;
+    double energy_remained;
     EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOff> event_poweroff;
     EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOn> event_poweron;
+    std::vector<double> energy_harvest_data;
+    void energyHarvest();
+    EventWrapper<EnergyMgmt, &EnergyMgmt::energyHarvest> event_energy_harvest;
 
 private:
-    std::vector<double> read_energy_profile();
-    void push_energy_harvesting_events(std::vector<double> _energy_harv);
+    std::vector<double> readEnergyProfile();
+    std::string _path_energy_profile;
+
 };
 
 #endif //GEM5_ENGY_HH

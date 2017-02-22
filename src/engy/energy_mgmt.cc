@@ -7,10 +7,12 @@
 
 EnergyMgmt::EnergyMgmt(const Params *p)
         : SimObject(p),
-          _path_energy_profile(p->path_energy_profile),
-          _time_unit(p->energy_time_unit),
+          time_unit(p->energy_time_unit),
+          energy_remained(0),
           event_poweroff(this),
-          event_poweron(this)
+          event_poweron(this),
+          event_energy_harvest(this),
+          _path_energy_profile(p->path_energy_profile)
 {
 
 }
@@ -23,21 +25,29 @@ EnergyMgmt::~EnergyMgmt()
 void EnergyMgmt::init()
 {
     /* Read energy profile */
-    std::vector<double> energy_data;
-    energy_data = read_energy_profile();
+    energy_harvest_data = readEnergyProfile();
+    /* Reset energy remained to 0. */
+    energy_remained = 0;
 
-    /* Todo: Push energy harvesting events here */
-    push_energy_harvesting_events(energy_data);
 
     DPRINTF(EnergyMgmt, "Energy Management module initialized!\n");
     DPRINTF(EnergyMgmt, "Energy profile: %s (Time unit: %d ticks)\n",
-            _path_energy_profile.c_str(), _time_unit);
+            _path_energy_profile.c_str(), time_unit);
+
+    /* Trigger first energy harvest event here */
+    energyHarvest();
+
 }
 
 int EnergyMgmt::consumeEnergy(double val)
 {
     /* Todo: Pass the module which consumed the energy to this function. (Or DPRINTF in the module which consumes energy) */
-    DPRINTF(EnergyMgmt, "Energy %lf is consumed by xxx. Energy remained: xxx\n", val);
+    /* Consume energy if val > 0, and harvest energy if val < 0 */
+    energy_remained -= val;
+    if (val > 0)
+        DPRINTF(EnergyMgmt, "Energy %lf is consumed by xxx. Energy remained: %lf\n", val, energy_remained);
+    else
+        DPRINTF(EnergyMgmt, "Energy %lf is harvested. Energy remained: %lf\n", -val, energy_remained);
     return 1;
 }
 
@@ -57,24 +67,35 @@ void EnergyMgmt::broadcastPowerOn()
     DPRINTF(EnergyMgmt, "Sufficient energy, system power on.\n");
 }
 
-std::vector<double> EnergyMgmt::read_energy_profile()
+std::vector<double> EnergyMgmt::readEnergyProfile()
 {
     std::vector<double> data;
     double temp;
     std::ifstream fin;
     fin.open(_path_energy_profile.c_str());
-    /* Todo: read energy profile and store the data into vector. */
+    /* Read energy profile and store the data into vector. */
     data.resize(0);
     while (fin>>temp) {
         data.push_back(temp);
     }
+    /* Reverse the energy harvest queue so that the first energy unit pops first */
+    reverse(data.begin(), data.end());
     fin.close();
     return data;
 }
 
-void EnergyMgmt::push_energy_harvesting_events(std::vector<double> _energy_harv)
+void EnergyMgmt::energyHarvest()
 {
-    /* Todo: push energy harvesting events into event queue */
+    /* Todo: process energy harvest event and trigger next one */
+    /* Add harvested energy into capacity. */
+    double energy_val = energy_harvest_data.back();
+    consumeEnergy(-energy_val);
+    energy_harvest_data.pop_back();
+
+    /* Trigger the next harvest function. */
+    schedule(event_energy_harvest, curTick() + time_unit);
+
+    // DPRINTF(EnergyMgmt, "Energy %lf harvested.\n", energy_val);
 }
 
 EnergyMgmt *
