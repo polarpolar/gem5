@@ -25,7 +25,6 @@ public:
     void broadcastPowerOn();
 
 protected:
-    /* Todo: there should be event wrapper for energy harvest. */
     int time_unit;
     double energy_remained;
     EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOff> event_poweroff;
