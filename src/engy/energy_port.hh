@@ -38,10 +38,10 @@ protected:
     std::string port_name;
     EnergyPortType port_type;
 
-    // owner needs to be set when SimObject is created.
-    SimObject *owner;
-
 public:
+
+    /* owner needs to be set when SimObject is created. */
+    SimObject *owner;
 
     EnergyPort(SimObject *_owner = NULL)
             : port_id(-1), port_name(""), port_type(NOT_DECIDED), owner(_owner)

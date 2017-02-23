@@ -4,6 +4,7 @@
 
 #include "engy/energy_port.hh"
 #include "sim/sim_object.hh"
+#include "debug/EnergyMgmt.hh"
 
 int EnergyPort::handleMsg(EnergyMsg msg)
 {
@@ -53,6 +54,8 @@ int MasterEnergyPort::broadcastMsg(EnergyMsg msg)
 int SlaveEnergyPort::setMaster(MasterEnergyPort &_master)
 {
     master = &_master;
+    DPRINTF(EnergyMgmt, "energy port connected. master: %s, slave: %s\n",
+            master->owner->name().c_str(), owner->name().c_str());
     return 1;
 }
 
