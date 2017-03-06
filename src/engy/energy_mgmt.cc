@@ -87,6 +87,9 @@ std::vector<double> EnergyMgmt::readEnergyProfile()
 void EnergyMgmt::energyHarvest()
 {
     /* Add harvested energy into capacity. */
+    if (energy_harvest_data.empty())
+        return;
+
     double energy_val = energy_harvest_data.back();
     consumeEnergy(-energy_val);
     energy_harvest_data.pop_back();
