@@ -25,6 +25,13 @@ public:
     void broadcastPowerOn();
 
 protected:
+    enum PowerState {
+        INIT_STATE,
+        POWER_OFF,
+        POWER_ON,
+        ERROR_STATE
+    };
+    PowerState state;
     int time_unit;
     double energy_remained;
     EventWrapper<EnergyMgmt, &EnergyMgmt::broadcastPowerOff> event_poweroff;

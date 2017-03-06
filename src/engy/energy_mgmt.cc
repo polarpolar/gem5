@@ -7,6 +7,7 @@
 
 EnergyMgmt::EnergyMgmt(const Params *p)
         : SimObject(p),
+          state(INIT_STATE),
           time_unit(p->energy_time_unit),
           energy_remained(0),
           event_poweroff(this),
@@ -29,13 +30,15 @@ void EnergyMgmt::init()
     /* Reset energy remained to 0. */
     energy_remained = 0;
 
-
     DPRINTF(EnergyMgmt, "Energy Management module initialized!\n");
     DPRINTF(EnergyMgmt, "Energy profile: %s (Time unit: %d ticks)\n",
             _path_energy_profile.c_str(), time_unit);
 
     /* Trigger first energy harvest event here */
     energyHarvest();
+
+    /* Change current state to POWER_ON */
+    state = POWER_ON;
 
 }
 
@@ -48,6 +51,18 @@ int EnergyMgmt::consumeEnergy(double val)
         DPRINTF(EnergyMgmt, "Energy %lf is consumed by xxx. Energy remained: %lf\n", val, energy_remained);
     else
         DPRINTF(EnergyMgmt, "Energy %lf is harvested. Energy remained: %lf\n", -val, energy_remained);
+
+    /* Todo: there should be a hot-plug state machine to deal with state changes of the whole system */
+    /* Todo: power off/on should be considered as msgs instead of specified functions */
+    /* Power off/on if power reaches threshold */
+    if (state == POWER_ON && val < 0) {
+        state = POWER_OFF;
+        broadcastPowerOff();
+    } else if (state == POWER_OFF && val > 0) {
+        state = POWER_ON;
+        broadcastPowerOn();
+    }
+
     return 1;
 }
 
