@@ -111,7 +111,8 @@ def instantiate(ckpt_dir=None):
     # Create the C++ sim objects and connect ports
     for obj in root.descendants(): obj.createCCObject()
     for obj in root.descendants(): obj.connectPorts()
-    root.system.connect_energy_ports()
+    if hasattr(root.system, 'energy_mgmt'):
+        root.system.connect_energy_ports()
 
     # Do a second pass to finish initializing the sim objects
     for obj in root.descendants(): obj.init()
